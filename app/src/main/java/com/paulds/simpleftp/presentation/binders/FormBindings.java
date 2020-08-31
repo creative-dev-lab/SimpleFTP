@@ -1,19 +1,14 @@
 package com.paulds.simpleftp.presentation.binders;
 
-import android.databinding.BaseObservable;
-import android.databinding.BindingAdapter;
-import android.databinding.ObservableField;
-import android.support.design.widget.TextInputLayout;
+import androidx.databinding.BindingAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Pair;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.paulds.simpleftp.presentation.model.FieldViewModel;
-
-import org.w3c.dom.Text;
 
 /**
  * Class used to defined bindings used in forms views.

@@ -1,6 +1,6 @@
 package com.paulds.simpleftp.presentation.model;
 
-import android.databinding.BaseObservable;
+import androidx.databinding.BaseObservable;
 
 import java.lang.reflect.Field;
 

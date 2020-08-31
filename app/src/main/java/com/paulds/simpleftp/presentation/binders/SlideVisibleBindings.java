@@ -2,12 +2,8 @@ package com.paulds.simpleftp.presentation.binders;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-
-import com.paulds.simpleftp.R;
 
 /**
  * Class used to defined binding for display and hide elements with a slide animation.

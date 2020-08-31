@@ -1,7 +1,7 @@
 package com.paulds.simpleftp.presentation.model;
 
-import android.databinding.Bindable;
-import android.databinding.ObservableBoolean;
+import androidx.databinding.Bindable;
+import androidx.databinding.ObservableBoolean;
 import android.view.View;
 
 import com.paulds.simpleftp.R;

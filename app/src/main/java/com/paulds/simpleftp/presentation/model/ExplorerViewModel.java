@@ -1,21 +1,23 @@
 package com.paulds.simpleftp.presentation.model;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Observable;
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.databinding.ObservableArrayList;
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableInt;
+
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.ObservableArrayList;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableInt;
+
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.paulds.simpleftp.BR;
 import com.paulds.simpleftp.R;
@@ -23,7 +25,6 @@ import com.paulds.simpleftp.data.entities.FileEntity;
 import com.paulds.simpleftp.data.entities.FtpServer;
 import com.paulds.simpleftp.presentation.AndroidApplication;
 import com.paulds.simpleftp.presentation.activities.EditServerActivity;
-import com.paulds.simpleftp.presentation.activities.ListServerActivity;
 import com.paulds.simpleftp.presentation.binders.ItemBinder;
 
 import java.io.IOException;
@@ -87,6 +88,7 @@ public class ExplorerViewModel extends BaseObservable {
 
     /**
      * Default constructor.
+     *
      * @param context The context of the current activity.
      */
     public ExplorerViewModel(Context context) {
@@ -101,10 +103,10 @@ public class ExplorerViewModel extends BaseObservable {
 
     /**
      * Gets the item binder used to display files.
+     *
      * @return The item binder used to display files.
      */
-    public ItemBinder<FileViewModel> itemViewBinder()
-    {
+    public ItemBinder<FileViewModel> itemViewBinder() {
         return new ItemBinder<FileViewModel>(BR.file, R.layout.row_file);
     }
 
@@ -115,6 +117,7 @@ public class ExplorerViewModel extends BaseObservable {
 
     /**
      * Update the current path and refresh the files list.
+     *
      * @param path The new path.
      */
     public void changeDirectory(final String path) {
@@ -131,6 +134,7 @@ public class ExplorerViewModel extends BaseObservable {
 
     /**
      * Called when a file is selected.
+     *
      * @param model The view model corresponding to the selected file.
      */
     public void selectFile(FileViewModel model) {
@@ -139,6 +143,7 @@ public class ExplorerViewModel extends BaseObservable {
 
     /**
      * Add a new folder
+     *
      * @param view The current view.
      */
     public void addFolder(View view) {
@@ -171,20 +176,33 @@ public class ExplorerViewModel extends BaseObservable {
 
     /**
      * Shows the server list.
+     *
      * @param view The current view.
      */
     public void showServers(View view) {
-        PopupMenu popupMenu = new PopupMenu(this.context, view) {
+        PopupMenu popupMenu = new PopupMenu(this.context, view);
+
+        List<FtpServer> servers = AndroidApplication.getRepository().getServerRepository().getServers();
+
+        popupMenu.getMenu().add(0, 0, 0, "Local");
+
+        for (FtpServer server : servers) {
+            popupMenu.getMenu().add(0, server.getId(), 0, server.getName());
+        }
+
+        popupMenu.getMenu().add(0, KEY_ADD_NEW_FAVORITE, 0, "Add new favorite...");
+
+        popupMenu.show();
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
-            public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
-                if(item.getItemId() > 0) {
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() > 0) {
                     server = AndroidApplication.getRepository().getServerRepository().getServer(item.getItemId());
-                }
-                else if(item.getItemId() == KEY_ADD_NEW_FAVORITE) {
+                } else if (item.getItemId() == KEY_ADD_NEW_FAVORITE) {
                     Intent intent = new Intent(context, EditServerActivity.class);
                     context.startActivity(intent);
-                }
-                else {
+                } else {
                     server = null;
                 }
 
@@ -192,19 +210,7 @@ public class ExplorerViewModel extends BaseObservable {
                 changeDirectory("/");
                 return true;
             }
-        };
-
-        List<FtpServer> servers = AndroidApplication.getRepository().getServerRepository().getServers();
-
-        popupMenu.getMenu().add(0, 0, 0, "Local");
-
-        for (FtpServer server: servers) {
-            popupMenu.getMenu().add(0, server.getId(), 0, server.getName());
-        }
-
-        popupMenu.getMenu().add(0, KEY_ADD_NEW_FAVORITE, 0, "Add new favorite...");
-
-        popupMenu.show();
+        });
     }
 
     /**
@@ -213,8 +219,8 @@ public class ExplorerViewModel extends BaseObservable {
     public void refreshSelectedItems() {
         int total = 0;
 
-        for (FileViewModel file: files) {
-            if(file.isSelected.get()) {
+        for (FileViewModel file : files) {
+            if (file.isSelected.get()) {
                 total++;
             }
         }
@@ -224,10 +230,11 @@ public class ExplorerViewModel extends BaseObservable {
 
     /**
      * Clear the selection.
+     *
      * @param view The current view.
      */
     public void clearSelection(View view) {
-        for (FileViewModel file: files) {
+        for (FileViewModel file : files) {
             file.isSelected.set(false);
         }
 
@@ -236,13 +243,14 @@ public class ExplorerViewModel extends BaseObservable {
 
     /**
      * Delete the selection.
+     *
      * @param view The current view.
      */
     public void deleteSelection(View view) {
         final List<FileEntity> filesToRemove = new ArrayList<FileEntity>();
 
-        for (FileViewModel file: files) {
-            if(file.isSelected.get()) {
+        for (FileViewModel file : files) {
+            if (file.isSelected.get()) {
                 filesToRemove.add(file.toEntity());
             }
         }
@@ -265,10 +273,9 @@ public class ExplorerViewModel extends BaseObservable {
                     @Override
                     public void run() {
                         try {
-                            if(server != null) {
+                            if (server != null) {
                                 AndroidApplication.getRepository().getFtpRepository().deleteFiles(server, filesToRemove);
-                            }
-                            else {
+                            } else {
                                 AndroidApplication.getRepository().getFileRepository().deleteFiles(filesToRemove);
                             }
                         } catch (FTPException e) {
@@ -303,6 +310,66 @@ public class ExplorerViewModel extends BaseObservable {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    /**
+     * Download the selection.
+     *
+     * @param view The current view.
+     */
+    public void downloadSelection(View view) {
+        final List<FileEntity> filesToDownload = new ArrayList<FileEntity>();
+
+        for (FileViewModel file : files) {
+            if (file.isSelected.get()) {
+                filesToDownload.add(file.toEntity());
+            }
+        }
+
+        this.clearSelection(view);
+
+        final Handler handler = new Handler();
+        final ExplorerViewModel instance = this;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+
+        builder.setMessage(String.format(this.context.getString(R.string.dialog_delete_files_message), filesToDownload.size()));
+
+        isLoading.set(true);
+
+        Thread loadingThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    if (server != null) {
+                        AndroidApplication.getRepository().getFtpRepository().downloadFiles(server, filesToDownload);
+                    } else {
+                        Toast.makeText(context, "No Remote Server", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (FTPException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (FTPIllegalReplyException e) {
+                    e.printStackTrace();
+                } catch (FTPAbortedException e) {
+                    e.printStackTrace();
+                } catch (FTPDataTransferException e) {
+                    e.printStackTrace();
+                }
+
+                final List<FileViewModel> newList = new ArrayList<FileViewModel>();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        changeDirectory(path);
+                    }
+                });
+            }
+        };
+
+        loadingThread.start();
     }
 
     private void refreshFiles() {

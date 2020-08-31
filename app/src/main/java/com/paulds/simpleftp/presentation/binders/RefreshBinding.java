@@ -1,9 +1,7 @@
 package com.paulds.simpleftp.presentation.binders;
 
-import android.databinding.BindingAdapter;
-import android.databinding.Observable;
-import android.databinding.ObservableBoolean;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.databinding.BindingAdapter;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
  * Class used to defined binding for a swipe refresh layout.

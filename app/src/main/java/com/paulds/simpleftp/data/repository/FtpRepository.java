@@ -97,6 +97,26 @@ public class FtpRepository {
     }
 
     /**
+     * Download a list of files and directories.
+     * @param server The FTP server.
+     * @param elements The specified list.
+     */
+    public void downloadFiles(FtpServer server, List<FileEntity> elements) throws FTPException, IOException, FTPIllegalReplyException, FTPDataTransferException, FTPAbortedException {
+        FTPClient client = this.getConnection(server);
+
+        for (FileEntity element: elements) {
+//            if(element.isDirectory()) {
+//                client.download(element.getPath(), new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + element.getName()));
+//                client.deleteDirectory(element.getPath());
+//            }
+//            else {
+//                client.deleteFile(element.getPath());
+//            }
+            client.download(element.getPath(), new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + element.getName()));
+        }
+    }
+
+    /**
      * Gets a FTP connection for a given server.
      * @param server The server to connect.
      * @return The FTP connection.

@@ -1,9 +1,7 @@
 package com.paulds.simpleftp.presentation.binders;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.databinding.BindingAdapter;
-import android.view.View;
+import androidx.databinding.BindingAdapter;
+
 import android.widget.ImageView;
 
 /**

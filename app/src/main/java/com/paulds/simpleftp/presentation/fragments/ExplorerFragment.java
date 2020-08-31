@@ -1,11 +1,10 @@
 package com.paulds.simpleftp.presentation.fragments;
 
-import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.net.Uri;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

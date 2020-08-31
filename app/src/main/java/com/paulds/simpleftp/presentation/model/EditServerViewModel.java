@@ -1,21 +1,19 @@
 package com.paulds.simpleftp.presentation.model;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.databinding.ObservableArrayList;
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
+
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.ObservableArrayList;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.paulds.simpleftp.R;
 import com.paulds.simpleftp.data.entities.FtpServer;
 import com.paulds.simpleftp.presentation.AndroidApplication;
-import com.paulds.simpleftp.presentation.activities.ListServerActivity;
 
 /**
  * Model for the FTP server creation view.

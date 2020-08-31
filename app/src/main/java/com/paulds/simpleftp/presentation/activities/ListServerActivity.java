@@ -2,14 +2,16 @@ package com.paulds.simpleftp.presentation.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 
 import com.paulds.simpleftp.R;
 import com.paulds.simpleftp.databinding.ActivityListServerBinding;
-import com.paulds.simpleftp.presentation.model.FtpServerViewModel;
 import com.paulds.simpleftp.presentation.model.ListServerViewModel;
 
 /**
@@ -56,7 +58,8 @@ public class ListServerActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == KEY_EDIT_SERVER) {
             if(resultCode == Activity.RESULT_OK){
                 this.viewModel.selectedServerVisible.set(false);
